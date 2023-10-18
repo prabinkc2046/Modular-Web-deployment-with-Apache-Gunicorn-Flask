@@ -13,4 +13,23 @@ I will be using decoupling method to deploy Flask application. Instead of embedd
 Let's get started :)
 
 # Setting up Flask application server
+Let's start with update.
+
+```bash
+    1  sudo apt update
+    2  sudo apt install python3 python3-pip python3-venv
+    3  mkdir hello-world
+    4  cd hello-world/
+    5  python3 -m venv venv
+    6  source venv/bin/activate
+    7  git clone https://github.com/prabinkc2046/Modular-Web-deployment-with-Apache-Gunicorn-Flask.git
+    9  cp Modular-Web-deployment-with-Apache-Gunicorn-Flask/app.py .
+   13  pip install Flask
+   14  pip install gunicorn
+   15  pip freeze
+   18  gunicorn -b 0.0.0.0:8000 app:app
+   21  deactivate 
+```
+
+
 
