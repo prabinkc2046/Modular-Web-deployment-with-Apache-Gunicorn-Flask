@@ -13,23 +13,40 @@ I will be using decoupling method to deploy Flask application. Instead of embedd
 Let's get started :)
 
 # Setting up Flask application server
-Let's start with update.
+## Deploying Flask applicatin in virtualised environment
+Run the following command step by step to deploy our flask application using gunicorn. Finally, our application can be accessible at http://server-IP:8000 
 
 ```bash
-    1  sudo apt update
-    2  sudo apt install python3 python3-pip python3-venv
-    3  mkdir hello-world
-    4  cd hello-world/
-    5  python3 -m venv venv
-    6  source venv/bin/activate
-    7  git clone https://github.com/prabinkc2046/Modular-Web-deployment-with-Apache-Gunicorn-Flask.git
-    9  cp Modular-Web-deployment-with-Apache-Gunicorn-Flask/app.py .
-   13  pip install Flask
-   14  pip install gunicorn
-   15  pip freeze
-   18  gunicorn -b 0.0.0.0:8000 app:app
-   21  deactivate 
+     sudo apt update
+     sudo apt install python3 python3-pip python3-venv
+     mkdir hello-world
+     cd hello-world/
+     python3 -m venv venv
+     source venv/bin/activate
+     git clone https://github.com/prabinkc2046/Modular-Web-deployment-with-Apache-Gunicorn-Flask.git
+     cp Modular-Web-deployment-with-Apache-Gunicorn-Flask/app.py .
+     pip install Flask
+     pip install gunicorn
+     pip freeze
+     gunicorn -b 0.0.0.0:8000 app:app
 ```
+After this, our flask application is accessible at http://server_ip/domain:8000. If the appliation is running behind a firewall, allow communication on port 8000 for incoming traffic.
+
+However, this is not suitable for production environment. I will show how to use systemd and also supervisior to manage and monitor our flask application. The process manager like systemd and tools like supervisor provides features such as supervision, logging and monitoring.
+
+## Setting up process manager using systemd
+
+```bash
+     sudo touch  /etc/systemd/system/flask-server.service
+     sudo cp flask-server.service /etc/systemd/system/flask-server.service 
+     sudo systemctl daemon-reload 
+     sudo systemctl start flask-server.service 
+     sudo systemctl status flask-server.service 
+     sudo systemctl enable flask-server.service 
+
+```
+
+
 
 
 
