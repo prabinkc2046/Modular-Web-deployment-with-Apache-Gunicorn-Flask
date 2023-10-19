@@ -39,7 +39,7 @@ However, this is not suitable for production environment. I will show how to use
 ```bash     
      deactivate
      sudo touch  /etc/systemd/system/flask-server.service
-     sudo cp flask-server.service /etc/systemd/system/flask-server.service 
+     sudo cp ../config/flask-server.service /etc/systemd/system/flask-server.service 
      sudo systemctl daemon-reload 
      sudo systemctl start flask-server.service 
      sudo systemctl status flask-server.service 
@@ -54,7 +54,7 @@ At this stage, virtual environment is deactivated and the flask application is r
 	sudo systemctl stop flask-server.service
 	sudo apt install supervisor
 	sudo touch /etc/supervisor/conf.d/flask-server.conf
-	sudo cp flask-server.conf /etc/supervisor/conf.d/flask-server.conf
+	sudo cp ../config/flask-server.conf /etc/supervisor/conf.d/flask-server.conf
 	sudo supervisorctl reread
 	sudo supervisorctl update
 	sudo supervisorctl status flask-server
@@ -70,7 +70,7 @@ In this setup, I will spin up a new linux server and walk you through the step t
 	sudo apt update
 	sudo apt install apache2 -y
 	sudo touch /etc/apache2/sites-available/flaskapp.conf
-	sudo cp flaskapp.conf /etc/apache2/sites-available/flaskapp.conf
+	sudo cp ../config/flaskapp.conf /etc/apache2/sites-available/flaskapp.conf
 	sudo a2enmod proxy
 	sudo a2enmod proxy_http
 	cd /etc/apache2/sites-available/flaskapp.conf
