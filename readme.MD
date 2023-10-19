@@ -189,7 +189,9 @@ Planning is key when it comes to deploying resources in aws.
 
 # VPC Architecture
 
-```bash
+```
+
+
 	+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Hello-world-project-vpc_ _ _ _ _ _ _ _ _ _ _  
 	|										|
 	|	_________________________Availability Zone___________________		|
@@ -205,6 +207,8 @@ Planning is key when it comes to deploying resources in aws.
 	|	|	|__ ____________|               |_______________|    |		|		 
 	|	|____________________________________________________________|          |	
 	|_______________________________________________________________________________										|
+
+
 ```
 
 
