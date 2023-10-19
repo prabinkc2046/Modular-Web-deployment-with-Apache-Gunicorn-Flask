@@ -99,6 +99,71 @@ Point your url to the front end proxy server. in my case, http://flaskapp.prabin
 sudo tail -f /var/log/apache2/flaskapp.access.log
 ``` 
 
+# Secure connection with let's encrypt
+Install following packages:
+```bash
+sudo apt install certbot python3-certbot-apache
+```
+Then
+```bash
+sudo certbot --apache
+```
+
+Answer as follow:
+```bash
+apache-server@localhost:~$ sudo certbot --apache
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Enter email address (used for urgent renewal and security notices)
+ (Enter 'c' to cancel): prabin.devops.demo@gmail.com
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Please read the Terms of Service at
+https://letsencrypt.org/documents/LE-SA-v1.3-September-21-2022.pdf. You must
+agree in order to register with the ACME server. Do you agree?
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+(Y)es/(N)o: Y
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Would you be willing, once your first certificate is successfully issued, to
+share your email address with the Electronic Frontier Foundation, a founding
+partner of the Let's Encrypt project and the non-profit organization that
+develops Certbot? We'd like to send you email about our work encrypting the web,
+EFF news, campaigns, and ways to support digital freedom.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+(Y)es/(N)o: N
+Account registered.
+
+Which names would you like to activate HTTPS for?
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1: hello-world.prabinkc.com
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Select the appropriate numbers separated by commas and/or spaces, or leave input
+blank to select all options shown (Enter 'c' to cancel): 1
+Requesting a certificate for hello-world.prabinkc.com
+
+Successfully received certificate.
+Certificate is saved at: /etc/letsencrypt/live/hello-world.prabinkc.com/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/hello-world.prabinkc.com/privkey.pem
+This certificate expires on 2024-01-16.
+These files will be updated when the certificate renews.
+Certbot has set up a scheduled task to automatically renew this certificate in the background.
+
+Deploying certificate
+Successfully deployed certificate for hello-world.prabinkc.com to /etc/apache2/sites-available/flaskapp-le-ssl.conf
+Congratulations! You have successfully enabled HTTPS on https://hello-world.prabinkc.com
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+If you like Certbot, please consider supporting our work by:
+ * Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+ * Donating to EFF:                    https://eff.org/donate-le
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+```
+
+# Access over encrypted connection
+
+Try accessing the front end server, in my case, https://hello-world.prabinkc.com
+and there you have it!
+
 So we are at the end of our project.
 We have configured apache to serve as a frontend web server while the backend server is dedicated to handle the dynamic content. In this appraoch, frontend can focus on things like ssl termination, serving static page without having to involve flask as well as load balancing. In other demo, I will walk you through configuring and setting up apache as a load balancing server. See you then.
 
