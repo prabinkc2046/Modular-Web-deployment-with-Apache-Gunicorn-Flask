@@ -34,19 +34,73 @@ After this, our flask application is accessible at http://server_ip/domain:8000.
 
 However, this is not suitable for production environment. I will show how to use systemd and also supervisior to manage and monitor our flask application. The process manager like systemd and tools like supervisor provides features such as supervision, logging and monitoring.
 
-## Setting up process manager using systemd
+## Setting up process manager with systemd
 
-```bash
+```bash     
+     deactivate
      sudo touch  /etc/systemd/system/flask-server.service
      sudo cp flask-server.service /etc/systemd/system/flask-server.service 
      sudo systemctl daemon-reload 
      sudo systemctl start flask-server.service 
      sudo systemctl status flask-server.service 
      sudo systemctl enable flask-server.service 
-
 ```
 
+At this stage, virtual environment is deactivated and the flask application is running in the background under the supervision of systemd. We can access our server at http://server_ip/domain:8000. In the next, I will show how to use supervisior to manage and monitor flask application.
 
+## Setting up process manager with supervisor
+
+```bash
+	sudo systemctl stop flask-server.service
+	sudo apt install supervisor
+	sudo touch /etc/supervisor/conf.d/flask-server.conf
+	sudo cp flask-server.conf /etc/supervisor/conf.d/flask-server.conf
+	sudo supervisorctl reread
+	sudo supervisorctl update
+	sudo supervisorctl status flask-server
+```
+There you go! we've just use supervisor to manage our flask application. I am happy with systemd so I will keep using systemd in this demo.
+
+So we are done with the setting up backend flask application server. Let's go ahead and tackle with configuring apache to server as frontend server.
+
+# Installing and Configuring Apache as frontend proxy web server
+In this setup, I will spin up a new linux server and walk you through the step to configure Apache to act as reverse proxy. Let's get started:
+
+```bash
+	sudo apt update
+	sudo apt install apache2 -y
+	sudo touch /etc/apache2/sites-available/flaskapp.conf
+	sudo cp flaskapp.conf /etc/apache2/sites-available/flaskapp.conf
+	sudo a2enmod proxy
+	sudo a2enmod proxy_http
+	cd /etc/apache2/sites-available/flaskapp.conf
+	sudo a2ensite flaskapp.conf
+	sudo systemctl restart apache2.service
+```
+
+Let's look at few line used in flaskapp.conf:
+```
+<VirtualHost *:80>
+    ServerName hello-world.prabinkc.com
+    ProxyPass / http://172.105.174.176:8000/
+    ProxyPassReverse / http://172.105.174.176:8000/
+
+    ErrorLog ${APACHE_LOG_DIR}/flaskapp.error.log
+    CustomLog ${APACHE_LOG_DIR}/flaskapp.access.log combined
+</VirtualHost>
+```
+This is my config. What ProxyPass directive does is that any request to our apache server at root url for example: http://hello-world.prabinkc.com will be forwarded to the backend flask server at http://172.105.174.176:8000/. And what ProxyPassReverse does is that it ensures that the response that came back from the backend server to appear as if it came from the proxy server itself. Essentially, adjusting the header in the response from the backend server to match with the proxy's header. 
+
+## Accessing the flask application via proxy server
+Point your url to the front end proxy server. in my case, http://flaskapp.prabinkc.com and you will see the message from the backend server.
+
+## Access the log 
+```bash
+sudo tail -f /var/log/apache2/flaskapp.access.log
+``` 
+
+So we are at the end of our project.
+We have configured apache to serve as a frontend web server while the backend server is dedicated to handle the dynamic content. In this appraoch, frontend can focus on things like ssl termination, serving static page without having to involve flask as well as load balancing. In other demo, I will walk you through configuring and setting up apache as a load balancing server. See you then.
 
 
 
