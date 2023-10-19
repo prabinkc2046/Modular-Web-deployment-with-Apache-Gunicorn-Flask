@@ -164,8 +164,49 @@ If you like Certbot, please consider supporting our work by:
 Try accessing the front end server, in my case, https://hello-world.prabinkc.com
 and there you have it!
 
-So we are at the end of our project.
 We have configured apache to serve as a frontend web server while the backend server is dedicated to handle the dynamic content. In this appraoch, frontend can focus on things like ssl termination, serving static page without having to involve flask as well as load balancing. In other demo, I will walk you through configuring and setting up apache as a load balancing server. See you then.
 
+# AWS Implementation
+I've done everything so far in the Linode. In the next, I will implement our project in AWS.
+
+# Planning
+Planning is key when it comes to deploying resources in aws.
+
+1. create vpc
+2. create public and private subnet in the same availablity zone
+3. Create route table for private and public subnet
+4. Create Security group for flask app server (backend)  and frontend apache server 
+5. Set up Nat Gateway for instances in private subnet to access internet
+6. Set up instance in public subnet as bastion host to access instance in private subnet
+7. Configure Flask application server as backend server
+8. Configure Apache in instance as frontend web server
+9. Set up ssl with let's encrypt for secure connection
+10. Test
+
+# Application Deployment  Architecture
+
+# VPC Architecture
+
+# VPC Architecture
+
+'''
+	..............................................Hello-world-project-VPC...........
+	|										|
+	|	......................................Availability Zone.......		|
+	|	|							     |		|
+	|	|							     |		|
+	|	|	......Public-SN..		..Private-SN....     |		|	    	    		
+	|	|	|		|		|		|    |		|
+	|	|	|		|		|		|    |		|
+	|	|	|		|		|		|    |		|
+	|	|	|	🛠️	|		|	🌐      |    |		|
+	|	|	|   ApacheServer|		| Flask App 	|	        |  
+	|	|	|		|		|   Server	|    |		|	
+	|	|	.................		................     |		|		 
+	|	|............................................................|		|
+	|										|
+	................................................................................
+
+```
 
 
